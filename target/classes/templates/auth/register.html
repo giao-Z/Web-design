@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>用户注册</title>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-lg border-0 mt-5">
+                        <div class="card-header bg-success text-white text-center py-4">
+                            <h3 class="mb-0">
+                                <i class="fas fa-user-plus me-2"></i>用户注册
+                            </h3>
+                            <p class="mb-0 mt-2 opacity-75">加入新闻管理系统</p>
+                        </div>
+                        
+                        <div class="card-body p-5">
+                            <!-- 注册表单 -->
+                            <form th:action="@{/register}" method="post" th:object="${user}" id="registerForm">
+                                <div class="form-group mb-3">
+                                    <label for="username" class="form-label">
+                                        <i class="fas fa-user me-2"></i>用户名 <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="username" 
+                                           th:field="*{username}"
+                                           placeholder="请输入用户名（3-20个字符）"
+                                           required
+                                           minlength="3"
+                                           maxlength="20">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                                    <small class="form-text text-muted">用户名将作为您的登录凭证，请谨慎选择</small>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="email" class="form-label">
+                                        <i class="fas fa-envelope me-2"></i>邮箱地址 <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email" 
+                                           th:field="*{email}"
+                                           placeholder="请输入邮箱地址"
+                                           required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                    <small class="form-text text-muted">邮箱用于找回密码和接收系统通知</small>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="password" class="form-label">
+                                        <i class="fas fa-lock me-2"></i>密码 <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="password" 
+                                               th:field="*{password}"
+                                               placeholder="请输入密码（至少6个字符）"
+                                               required
+                                               minlength="6">
+                                        <button class="btn btn-outline-secondary" 
+                                                type="button" 
+                                                id="togglePassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                    <!-- 密码强度指示器 -->
+                                    <div class="mt-2">
+                                        <div class="progress" style="height: 5px;">
+                                            <div class="progress-bar" id="passwordStrength" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                        <small class="form-text" id="passwordStrengthText">请输入密码</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-4">
+                                    <label for="confirmPassword" class="form-label">
+                                        <i class="fas fa-lock me-2"></i>确认密码 <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="confirmPassword" 
+                                               name="confirmPassword"
+                                               placeholder="请再次输入密码"
+                                               required>
+                                        <button class="btn btn-outline-secondary" 
+                                                type="button" 
+                                                id="toggleConfirmPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback" id="confirmPasswordError"></div>
+                                </div>
+                                
+                                <!-- 可选字段 -->
+                                <div class="form-group mb-3">
+                                    <label for="realName" class="form-label">
+                                        <i class="fas fa-id-card me-2"></i>真实姓名
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="realName" 
+                                           th:field="*{realName}"
+                                           placeholder="请输入真实姓名（可选）"
+                                           maxlength="50">
+                                    <small class="form-text text-muted">真实姓名有助于建立信任，可选填写</small>
+                                </div>
+                                
+                                <div class="form-group mb-4">
+                                    <label for="phone" class="form-label">
+                                        <i class="fas fa-phone me-2"></i>手机号码
+                                    </label>
+                                    <input type="tel" 
+                                           class="form-control" 
+                                           id="phone" 
+                                           th:field="*{phone}"
+                                           placeholder="请输入手机号码（可选）"
+                                           maxlength="20">
+                                    <small class="form-text text-muted">手机号码用于账号安全验证，可选填写</small>
+                                </div>
+                                
+                                <!-- 服务条款 -->
+                                <div class="form-group mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" 
+                                               class="form-check-input" 
+                                               id="agreeTerms" 
+                                               required>
+                                        <label class="form-check-label" for="agreeTerms">
+                                            我已阅读并同意 <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">《用户服务协议》</a> 和 <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">《隐私政策》</a>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-user-plus me-2"></i>立即注册
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <!-- 分割线 -->
+                            <div class="text-center my-4">
+                                <hr class="my-3">
+                                <span class="text-muted bg-white px-3">已有账号？</span>
+                            </div>
+                            
+                            <!-- 登录链接 -->
+                            <div class="text-center">
+                                <a th:href="@{/login}" class="btn btn-outline-primary">
+                                    <i class="fas fa-sign-in-alt me-2"></i>立即登录
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 注册优势 -->
+                    <div class="row mt-4">
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="bg-white rounded p-3 shadow-sm">
+                                <i class="fas fa-edit fa-2x text-primary mb-2"></i>
+                                <h6>发布新闻</h6>
+                                <small class="text-muted">分享您的观点和见解</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="bg-white rounded p-3 shadow-sm">
+                                <i class="fas fa-users fa-2x text-success mb-2"></i>
+                                <h6>社区交流</h6>
+                                <small class="text-muted">与其他用户互动讨论</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="bg-white rounded p-3 shadow-sm">
+                                <i class="fas fa-bell fa-2x text-info mb-2"></i>
+                                <h6>个性化推荐</h6>
+                                <small class="text-muted">获取定制化内容推送</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务条款模态框 -->
+        <div class="modal fade" id="termsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">用户服务协议</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>1. 服务条款的接受</h6>
+                        <p>通过注册和使用本系统，您表示同意遵守本服务协议的所有条款和条件。</p>
+                        
+                        <h6>2. 用户责任</h6>
+                        <p>用户承诺发布的内容真实、合法，不侵犯他人权益，不传播违法信息。</p>
+                        
+                        <h6>3. 隐私保护</h6>
+                        <p>我们承诺保护用户隐私，不会未经授权泄露用户个人信息。</p>
+                        
+                        <h6>4. 服务变更</h6>
+                        <p>我们保留随时修改或终止服务的权利，但会提前通知用户。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 隐私政策模态框 -->
+        <div class="modal fade" id="privacyModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">隐私政策</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>1. 信息收集</h6>
+                        <p>我们只收集为提供服务所必需的用户信息，包括用户名、邮箱等。</p>
+                        
+                        <h6>2. 信息使用</h6>
+                        <p>收集的信息仅用于提供服务、改善用户体验和系统安全。</p>
+                        
+                        <h6>3. 信息保护</h6>
+                        <p>我们采用行业标准的安全措施保护用户信息安全。</p>
+                        
+                        <h6>4. 信息共享</h6>
+                        <p>除法律要求外，我们不会与第三方分享用户个人信息。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 额外的脚本 -->
+    <th:block th:fragment="extra-scripts">
+        <script>
+            $(document).ready(function() {
+                // 密码显示/隐藏切换
+                $('#togglePassword').click(function() {
+                    togglePasswordVisibility('#password', $(this));
+                });
+                
+                $('#toggleConfirmPassword').click(function() {
+                    togglePasswordVisibility('#confirmPassword', $(this));
+                });
+                
+                function togglePasswordVisibility(fieldId, button) {
+                    var passwordField = $(fieldId);
+                    var passwordFieldType = passwordField.attr('type');
+                    var icon = button.find('i');
+                    
+                    if (passwordFieldType === 'password') {
+                        passwordField.attr('type', 'text');
+                        icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                    } else {
+                        passwordField.attr('type', 'password');
+                        icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                    }
+                }
+                
+                // 密码强度检测
+                $('#password').on('input', function() {
+                    var password = $(this).val();
+                    var strength = calculatePasswordStrength(password);
+                    updatePasswordStrengthIndicator(strength);
+                });
+                
+                function calculatePasswordStrength(password) {
+                    var score = 0;
+                    if (password.length >= 6) score += 20;
+                    if (password.length >= 8) score += 20;
+                    if (/[a-z]/.test(password)) score += 20;
+                    if (/[A-Z]/.test(password)) score += 20;
+                    if (/[0-9]/.test(password)) score += 10;
+                    if (/[^A-Za-z0-9]/.test(password)) score += 10;
+                    return score;
+                }
+                
+                function updatePasswordStrengthIndicator(score) {
+                    var progressBar = $('#passwordStrength');
+                    var strengthText = $('#passwordStrengthText');
+                    
+                    progressBar.css('width', score + '%');
+                    
+                    if (score < 40) {
+                        progressBar.removeClass().addClass('progress-bar bg-danger');
+                        strengthText.text('密码强度：弱').removeClass().addClass('form-text text-danger');
+                    } else if (score < 70) {
+                        progressBar.removeClass().addClass('progress-bar bg-warning');
+                        strengthText.text('密码强度：中等').removeClass().addClass('form-text text-warning');
+                    } else {
+                        progressBar.removeClass().addClass('progress-bar bg-success');
+                        strengthText.text('密码强度：强').removeClass().addClass('form-text text-success');
+                    }
+                }
+                
+                // 确认密码验证
+                $('#confirmPassword').on('input', function() {
+                    var password = $('#password').val();
+                    var confirmPassword = $(this).val();
+                    var errorDiv = $('#confirmPasswordError');
+                    
+                    if (confirmPassword && password !== confirmPassword) {
+                        $(this).addClass('is-invalid');
+                        errorDiv.text('两次输入的密码不一致').show();
+                    } else {
+                        $(this).removeClass('is-invalid');
+                        errorDiv.hide();
+                    }
+                });
+                
+                // 表单验证
+                $('#registerForm').on('submit', function(e) {
+                    var isValid = true;
+                    
+                    // 验证用户名
+                    var username = $('#username').val().trim();
+                    if (username.length < 3 || username.length > 20) {
+                        showFieldError('#username', '用户名长度必须在3-20个字符之间');
+                        isValid = false;
+                    }
+                    
+                    // 验证邮箱
+                    var email = $('#email').val().trim();
+                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        showFieldError('#email', '请输入有效的邮箱地址');
+                        isValid = false;
+                    }
+                    
+                    // 验证密码
+                    var password = $('#password').val();
+                    if (password.length < 6) {
+                        showFieldError('#password', '密码长度不能少于6个字符');
+                        isValid = false;
+                    }
+                    
+                    // 验证确认密码
+                    var confirmPassword = $('#confirmPassword').val();
+                    if (password !== confirmPassword) {
+                        showFieldError('#confirmPassword', '两次输入的密码不一致');
+                        isValid = false;
+                    }
+                    
+                    // 验证服务条款
+                    if (!$('#agreeTerms').is(':checked')) {
+                        showAlert('请阅读并同意用户服务协议和隐私政策', 'danger');
+                        isValid = false;
+                    }
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    // 显示加载状态
+                    var submitBtn = $(this).find('button[type="submit"]');
+                    submitBtn.html('<span class="spinner-border spinner-border-sm me-2"></span>注册中...');
+                    submitBtn.prop('disabled', true);
+                });
+                
+                function showFieldError(fieldId, message) {
+                    var field = $(fieldId);
+                    field.addClass('is-invalid');
+                    field.siblings('.invalid-feedback').text(message).show();
+                }
+                
+                // 自动聚焦到用户名输入框
+                $('#username').focus();
+            });
+            
+            function showAlert(message, type) {
+                var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                               '<i class="fas fa-exclamation-circle me-2"></i>' + message +
+                               '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+                               '</div>';
+                
+                $('#alertContainer').html(alertHtml);
+                
+                // 滚动到顶部显示警告
+                $('html, body').animate({
+                    scrollTop: $('#alertContainer').offset().top - 100
+                }, 500);
+            }
+        </script>
+    </th:block>
+</body>
+</html>
+

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>首页</title>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <!-- 轮播图区域 -->
+            <div id="newsCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="2"></button>
+                    <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="3"></button>
+                    <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="4"></button>
+                    <button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="5"></button>
+                </div>
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="carousel-overlay"></div>
+                        <div class="carousel-content">
+                            <h2>美国名嘴：美国不是将输给中国 是已经输了</h2>
+                            <p>深度分析中美关系发展趋势，探讨全球格局变化</p>
+                            <a href="https://www.sohu.com/a/848510390_121450400" target="_blank" class="btn btn-primary btn-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>查看详情
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="carousel-overlay"></div>
+                        <div class="carousel-content">
+                            <h2>官媒："炮舰外交"都已作古 对华口诛笔伐能管用？</h2>
+                            <p>分析国际关系中的外交策略与现代政治格局</p>
+                            <a href="https://www.thepaper.cn/newsDetail_forward_30924540" target="_blank" class="btn btn-primary btn-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>查看详情
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="carousel-overlay"></div>
+                        <div class="carousel-content">
+                            <h2>美日印澳谋划联合对抗中国 却"不想显得过于反华"</h2>
+                            <p>四国联盟的战略考量与地缘政治影响分析</p>
+                            <a href="https://www.ckhq.net/arc/hqck/jsck/2023/0212/583319.html" target="_blank" class="btn btn-primary btn-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>查看详情
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="carousel-overlay"></div>
+                        <div class="carousel-content">
+                            <h2>美防长称要与盟友合作 打造针对中国的"可信威慑"</h2>
+                            <p>军事战略与国际安全形势的最新发展</p>
+                            <a href="https://www.163.com/dy/article/K12B6E5D05568PJ3.html" target="_blank" class="btn btn-primary btn-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>查看详情
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="carousel-overlay"></div>
+                        <div class="carousel-content">
+                            <h2>中国制造业何以连续11年位居全球第一</h2>
+                            <p>探索中国制造业发展成就与未来发展方向</p>
+                            <a href="https://m.163.com/dy/article/GKG53OLI0514R9NP.html" target="_blank" class="btn btn-primary btn-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>查看详情
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="carousel-overlay"></div>
+                        <div class="carousel-content">
+                            <h2>境外学者：正在被孤立于世界之外的是美国 而非中国</h2>
+                            <p>国际学者视角下的全球政治格局分析</p>
+                            <a href="https://mil.news.sina.com.cn/2021-03-14/doc-ikkntiam1192541.shtml" target="_blank" class="btn btn-primary btn-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>查看详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">上一个</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">下一个</span>
+                </button>
+            </div>
+
+            <!-- 主要内容区域 -->
+            <div class="row mt-5">
+                <!-- 左侧主要内容 -->
+                <div class="col-lg-8">
+                    <!-- 最新新闻标题 -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3><i class="fas fa-newspaper me-2 text-primary"></i>最新新闻</h3>
+                        <a th:href="@{/news}" class="btn btn-outline-primary">
+                            查看更多 <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- 新闻列表 -->
+                    <div class="row" th:if="${latestNews != null and !latestNews.isEmpty()}">
+                        <div class="col-md-6 mb-4" th:each="news : ${latestNews}">
+                            <div class="news-card fade-in-up">
+                                <div class="news-card-image" 
+                                     th:style="${news.imageUrl != null ? 'background-image: url(' + news.imageUrl + ')' : 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}">
+                                    <span class="news-card-category" th:text="${news.category.description}">分类</span>
+                                </div>
+                                <div class="news-card-body">
+                                    <a th:href="@{/news/{id}(id=${news.id})}" class="news-card-title" th:text="${news.title}">新闻标题</a>
+                                    <p class="news-card-summary" th:text="${news.summary != null ? news.summary : #strings.abbreviate(news.content, 100)}">新闻摘要</p>
+                                    <div class="news-card-meta">
+                                        <span><i class="fas fa-user me-1"></i><span th:text="${news.author.username}">作者</span></span>
+                                        <span><i class="fas fa-eye me-1"></i><span th:text="${news.viewCount}">0</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 无新闻时的提示 -->
+                    <div th:if="${latestNews == null or latestNews.isEmpty()}" class="text-center py-5">
+                        <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">暂无新闻内容</h5>
+                        <p class="text-muted">系统中还没有发布的新闻，请稍后再来查看。</p>
+                        <a th:href="@{/news/create}" class="btn btn-primary" th:if="${#authorization.expression('isAuthenticated()')}">
+                            <i class="fas fa-plus me-2"></i>发布第一篇新闻
+                        </a>
+                    </div>
+
+                    <!-- 推荐新闻链接 -->
+                    <div class="mt-5">
+                        <h4><i class="fas fa-star me-2 text-warning"></i>推荐阅读</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-6 mb-3">
+                                <a href="https://www.sohu.com/a/848510390_121450400" target="_blank" class="news-link">
+                                    <h6>美国名嘴：美国不是将输给中国 是已经输了</h6>
+                                    <small>深度分析中美关系发展趋势</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="https://www.thepaper.cn/newsDetail_forward_30924540" target="_blank" class="news-link">
+                                    <h6>官媒："炮舰外交"都已作古 对华口诛笔伐能管用？</h6>
+                                    <small>国际关系中的外交策略分析</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="https://www.ckhq.net/arc/hqck/jsck/2023/0212/583319.html" target="_blank" class="news-link">
+                                    <h6>美日印澳谋划联合对抗中国 却"不想显得过于反华"</h6>
+                                    <small>四国联盟的战略考量分析</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="https://www.163.com/dy/article/K12B6E5D05568PJ3.html" target="_blank" class="news-link">
+                                    <h6>美防长称要与盟友合作 打造针对中国的"可信威慑"</h6>
+                                    <small>军事战略与国际安全形势</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="https://m.163.com/dy/article/GKG53OLI0514R9NP.html" target="_blank" class="news-link">
+                                    <h6>中国制造业何以连续11年位居全球第一</h6>
+                                    <small>中国制造业发展成就探索</small>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="https://mil.news.sina.com.cn/2021-03-14/doc-ikkntiam1192541.shtml" target="_blank" class="news-link">
+                                    <h6>境外学者：正在被孤立于世界之外的是美国 而非中国</h6>
+                                    <small>国际学者视角下的政治格局</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧边栏 -->
+                <div class="col-lg-4">
+                    <!-- 快速操作 -->
+                    <div class="sidebar">
+                        <h5 class="sidebar-title">快速操作</h5>
+                        <div class="d-grid gap-2">
+                            <a th:href="@{/news/create}" class="btn btn-primary" th:if="${#authorization.expression('isAuthenticated()')}">
+                                <i class="fas fa-plus me-2"></i>发布新闻
+                            </a>
+                            <a th:href="@{/forum}" class="btn btn-outline-primary" th:if="${#authorization.expression('isAuthenticated()')}">
+                                <i class="fas fa-comments me-2"></i>进入论坛
+                            </a>
+                            <a th:href="@{/chat}" class="btn btn-outline-success" th:if="${#authorization.expression('isAuthenticated()')}">
+                                <i class="fas fa-comment-dots me-2"></i>聊天室
+                            </a>
+                            <a th:href="@{/login}" class="btn btn-primary" th:unless="${#authorization.expression('isAuthenticated()')}">
+                                <i class="fas fa-sign-in-alt me-2"></i>登录系统
+                            </a>
+                            <a th:href="@{/register}" class="btn btn-outline-primary" th:unless="${#authorization.expression('isAuthenticated()')}">
+                                <i class="fas fa-user-plus me-2"></i>注册账号
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 新闻分类 -->
+                    <div class="sidebar">
+                        <h5 class="sidebar-title">新闻分类</h5>
+                        <div class="list-group list-group-flush">
+                            <a th:href="@{/news?category=POLITICS}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-landmark me-2"></i>政治新闻
+                            </a>
+                            <a th:href="@{/news?category=ECONOMY}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-chart-line me-2"></i>经济新闻
+                            </a>
+                            <a th:href="@{/news?category=TECHNOLOGY}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-microchip me-2"></i>科技新闻
+                            </a>
+                            <a th:href="@{/news?category=SPORTS}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-futbol me-2"></i>体育新闻
+                            </a>
+                            <a th:href="@{/news?category=INTERNATIONAL}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-globe me-2"></i>国际新闻
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 系统统计 -->
+                    <div class="sidebar">
+                        <h5 class="sidebar-title">系统统计</h5>
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="border rounded p-3 mb-2">
+                                    <h4 class="text-primary mb-1">0</h4>
+                                    <small class="text-muted">新闻总数</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3 mb-2">
+                                    <h4 class="text-success mb-1">0</h4>
+                                    <small class="text-muted">注册用户</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3 mb-2">
+                                    <h4 class="text-warning mb-1">0</h4>
+                                    <small class="text-muted">论坛帖子</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3 mb-2">
+                                    <h4 class="text-info mb-1">0</h4>
+                                    <small class="text-muted">在线用户</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+

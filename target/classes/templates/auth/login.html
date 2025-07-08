@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>用户登录</title>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-lg border-0 mt-5">
+                        <div class="card-header bg-primary text-white text-center py-4">
+                            <h3 class="mb-0">
+                                <i class="fas fa-sign-in-alt me-2"></i>用户登录
+                            </h3>
+                            <p class="mb-0 mt-2 opacity-75">欢迎回到新闻管理系统</p>
+                        </div>
+                        
+                        <div class="card-body p-5">
+                            <!-- 登录表单 -->
+                            <form th:action="@{/login}" method="post" id="loginForm">
+                                <div class="form-group mb-4">
+                                    <label for="username" class="form-label">
+                                        <i class="fas fa-user me-2"></i>用户名或邮箱
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control form-control-lg" 
+                                           id="username" 
+                                           name="username" 
+                                           placeholder="请输入用户名或邮箱"
+                                           required>
+                                </div>
+                                
+                                <div class="form-group mb-4">
+                                    <label for="password" class="form-label">
+                                        <i class="fas fa-lock me-2"></i>密码
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" 
+                                               class="form-control form-control-lg" 
+                                               id="password" 
+                                               name="password" 
+                                               placeholder="请输入密码"
+                                               required>
+                                        <button class="btn btn-outline-secondary" 
+                                                type="button" 
+                                                id="togglePassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" 
+                                               class="form-check-input" 
+                                               id="remember-me" 
+                                               name="remember-me">
+                                        <label class="form-check-label" for="remember-me">
+                                            记住我（7天内自动登录）
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-sign-in-alt me-2"></i>登录
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <!-- 分割线 -->
+                            <div class="text-center my-4">
+                                <hr class="my-3">
+                                <span class="text-muted bg-white px-3">或者</span>
+                            </div>
+                            
+                            <!-- 注册链接 -->
+                            <div class="text-center">
+                                <p class="mb-2">还没有账号？</p>
+                                <a th:href="@{/register}" class="btn btn-outline-primary">
+                                    <i class="fas fa-user-plus me-2"></i>立即注册
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- 演示账号信息 -->
+                        <div class="card-footer bg-light">
+                            <small class="text-muted">
+                                <strong>演示账号：</strong><br>
+                                管理员：admin / admin123<br>
+                                普通用户：user / user123
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <!-- 功能说明 -->
+                    <div class="row mt-4">
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="bg-white rounded p-3 shadow-sm">
+                                <i class="fas fa-newspaper fa-2x text-primary mb-2"></i>
+                                <h6>新闻发布</h6>
+                                <small class="text-muted">发布和管理新闻内容</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="bg-white rounded p-3 shadow-sm">
+                                <i class="fas fa-comments fa-2x text-success mb-2"></i>
+                                <h6>论坛交流</h6>
+                                <small class="text-muted">参与社区讨论</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="bg-white rounded p-3 shadow-sm">
+                                <i class="fas fa-comment-dots fa-2x text-info mb-2"></i>
+                                <h6>实时聊天</h6>
+                                <small class="text-muted">在线聊天交流</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 额外的脚本 -->
+    <th:block th:fragment="extra-scripts">
+        <script>
+            $(document).ready(function() {
+                // 密码显示/隐藏切换
+                $('#togglePassword').click(function() {
+                    var passwordField = $('#password');
+                    var passwordFieldType = passwordField.attr('type');
+                    var icon = $(this).find('i');
+                    
+                    if (passwordFieldType === 'password') {
+                        passwordField.attr('type', 'text');
+                        icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                    } else {
+                        passwordField.attr('type', 'password');
+                        icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                    }
+                });
+                
+                // 表单验证
+                $('#loginForm').on('submit', function(e) {
+                    var username = $('#username').val().trim();
+                    var password = $('#password').val();
+                    
+                    if (!username) {
+                        e.preventDefault();
+                        showAlert('请输入用户名或邮箱', 'danger');
+                        $('#username').focus();
+                        return false;
+                    }
+                    
+                    if (!password) {
+                        e.preventDefault();
+                        showAlert('请输入密码', 'danger');
+                        $('#password').focus();
+                        return false;
+                    }
+                    
+                    // 显示加载状态
+                    var submitBtn = $(this).find('button[type="submit"]');
+                    submitBtn.html('<span class="spinner-border spinner-border-sm me-2"></span>登录中...');
+                    submitBtn.prop('disabled', true);
+                });
+                
+                // 回车键提交表单
+                $('#username, #password').keypress(function(e) {
+                    if (e.which === 13) {
+                        $('#loginForm').submit();
+                    }
+                });
+                
+                // 自动聚焦到用户名输入框
+                $('#username').focus();
+            });
+            
+            function showAlert(message, type) {
+                var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                               '<i class="fas fa-exclamation-circle me-2"></i>' + message +
+                               '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>' +
+                               '</div>';
+                
+                $('#alertContainer').html(alertHtml);
+                
+                // 滚动到顶部显示警告
+                $('html, body').animate({
+                    scrollTop: $('#alertContainer').offset().top - 100
+                }, 500);
+            }
+        </script>
+    </th:block>
+</body>
+</html>
+

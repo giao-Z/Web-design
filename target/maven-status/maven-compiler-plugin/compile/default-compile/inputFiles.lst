@@ -1,0 +1,14 @@
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/entity/User.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/config/DataInitializer.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/config/SecurityConfig.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/controller/UserController.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/entity/ForumReply.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/controller/NewsController.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/service/UserService.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/NewsManagementApplication.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/controller/HomeController.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/entity/ForumPost.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/service/NewsService.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/repository/UserRepository.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/entity/News.java
+/home/ubuntu/news-management-system/src/main/java/com/newsmanagement/entity/ChatMessage.java
